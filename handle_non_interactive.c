@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void execute_command_ins(char *command, char *av[]);
+void execute_command_ins(char *command, shell_info *info, char *av[]);
 char *read_user_input_from_stdin();
 
 /**
@@ -106,10 +106,11 @@ void tokenization_ins(shell_info *info, int *num_commands)
  * It waits for each child process to complete in the parent process.
  *
  * @command: The command to be executed.
+ * @info: Pointer to the shell_info structure.
  * @av: Array of strings containing the program name and its arguments.
  */
 
-void execute_command_ins(char *command, char *av[])
+void execute_command_ins(char *command, shell_info *info, char *av[])
 {
 	pid_t child_pid;
 	int i = 0, j, child_status;
@@ -127,29 +128,73 @@ void execute_command_ins(char *command, char *av[])
 
 	if (access(args[0], X_OK) == 0)
 	{
-		child_pid = fork();
-		if (child_pid < 0)
+		if (args[1] != NULL && args[1][0] == '/')
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		else if (child_pid == 0)
-		{
-			/* Child process */
-			if (execve(args[0], args, environ) == -1)
+			if (access(args[1], F_OK) == -1)
 			{
-				perror("execve");
-				exit(EXIT_FAILURE);
+				my_print_to_stderr(args[0]);
+				my_print_to_stderr(": cannot access '");
+				my_print_to_stderr(args[1]);
+				my_print_to_stderr("': No such file or directory\n");
+				for (j = 0; args[j] != NULL; ++j)
+				{
+					free(args[j]);
+				}
+				free(info->command_line);
+				free_tokens(info);
+				free(info);
+				exit(2);
 			}
 
+			child_pid = fork();
+
+			if (child_pid < 0)
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+			else if (child_pid == 0)
+			{
+				if (execve(args[0], args, environ) == -1)
+				{
+					perror("execve");
+					exit(EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				if (waitpid(child_pid, &child_status, 0) == -1)
+				{
+					perror("waitpid");
+					exit(EXIT_FAILURE);
+				}
+			}
 		}
 		else
 		{
-			/* Parent process */
-			if (waitpid(child_pid, &child_status, 0) == -1)
+			child_pid = fork();
+			if (child_pid < 0)
 			{
-				perror("waitpid");
+				perror("fork");
 				exit(EXIT_FAILURE);
+			}
+			else if (child_pid == 0)
+			{
+				/* Child process */
+				if (execve(args[0], args, environ) == -1)
+				{
+					perror("execve");
+					exit(EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				/* Parent process */
+				if (waitpid(child_pid, &child_status, 0) == -1)
+				{
+					perror("waitpid");
+					exit(EXIT_FAILURE);
+				}
 			}
 		}
 		for (j = 0; args[j] != NULL; ++j)
@@ -164,10 +209,16 @@ void execute_command_ins(char *command, char *av[])
 		my_print_to_stderr("1: ");
 		my_print_to_stderr(args[0]);
 		my_print_to_stderr(": not found\n");
+		for (j = 0; args[j] != NULL; ++j)
+		{
+			free(args[j]);
+		}
+		free(info->command_line);
+		free_tokens(info);
+		free(info);
 		exit(127);
 
 	}
-
 }
 
 

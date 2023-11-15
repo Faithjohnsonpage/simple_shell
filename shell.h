@@ -11,7 +11,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#define MAX_ARG_COUNT 1024
+#define MAX_ARG_COUNT 10024
 #define MAX_ALIASES 1024
 
 /**
@@ -88,7 +88,7 @@ void execute_command(shell_info *info, int *status);
 void executeExitCommand_ins(shell_info *info, char *command, char *av[]);
 void handle_alias_command_ins(shell_info *info, char *command);
 void executeCdCommand_ins(char *command, char *av[]);
-void execute_command_ins(char *command, char *av[]);
+void execute_command_ins(char *command, shell_info *info, char *av[]);
 void execute_cmd_from_paths(shell_info *info, char *args[]);
 void execute_command_alias(char *command, char *args[]);
 Node *env_node(char *filepath, shell_info *info);

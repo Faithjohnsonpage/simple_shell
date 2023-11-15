@@ -22,7 +22,7 @@ void handle_non_interactive(char *command, shell_info *info, char *av[])
 	}
 	else if (command[0] == '/')
 	{
-		execute_command_ins(command, av);
+		execute_command_ins(command, info, av);
 	}
 	else
 	{
