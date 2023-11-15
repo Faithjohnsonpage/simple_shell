@@ -243,10 +243,10 @@ void executeCdCommand_ins(char *command, char *av[])
 		setenv("PWD", cwd, 1);
 		free(cwd);
 	}
-	/*else
+	else
 	{
 		perror("getcwd");
-	}*/
+	}
 
 	/* Free allocated memory */
 	for (j = 0; args[j] != NULL; ++j)
