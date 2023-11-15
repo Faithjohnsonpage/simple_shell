@@ -14,7 +14,6 @@ void executeEnvCommand(void)
 		my_print(*env);
 		my_print("\n");
 	}
-	return;
 }
 
 /**
@@ -87,7 +86,6 @@ void executeCdCommand(shell_info *info)
 	{
 		perror("getcwd");
 	}
-	return;
 }
 
 
@@ -123,7 +121,6 @@ void builtIn_Cmds(shell_info *info)
 	{
 		executeAliasCommand(info);
 	}
-	else {
+	else
 		return;
-	}
 }

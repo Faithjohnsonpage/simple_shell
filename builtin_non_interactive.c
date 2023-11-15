@@ -1,9 +1,14 @@
 #include "shell.h"
 
+void executeExitCommand_ins(shell_info *info, char *command, char *av[]);
+void handle_alias_command_ins(shell_info *info, char *command);
+void executeCdCommand_ins(char *command, char *av[]);
+
 /**
- * executeExitCommand - Handles the "exit" built-in command.
+ * executeExitCommand_ins - Handles the "exit" built-in command.
  * Frees memory and exits the shell with the specified status.
  * @info: Pointer to the shell_info structure.
+ * @command: exit command to be executed.
  * @av: Array of command line arguments.
  */
 
@@ -65,7 +70,7 @@ void executeExitCommand_ins(shell_info *info, char *command, char *av[])
 
 
 /**
- * executeAliasCommand - Handles the "alias" built-in command.
+ * executeAliasCommand_ins - Handles the "alias" built-in command.
  * Calls the function to handle alias-related operations.
  * @info: Pointer to the shell_info structure.
  * @command: The alias command to be processed.
@@ -168,6 +173,7 @@ void handle_alias_command_ins(shell_info *info, char *command)
 /**
  * executeCdCommand_ins - Handles the "cd" built-in command.
  * Changes the current working directory.
+ * @command: command to be executed.
  * @av: Array of command line arguments.
  */
 
@@ -247,6 +253,4 @@ void executeCdCommand_ins(char *command, char *av[])
 	{
 		free(args[j]);
 	}
-
-	return;
 }

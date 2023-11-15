@@ -1,5 +1,7 @@
 #include "shell.h"
 
+void handle_non_interactive(char *command, shell_info *info, char *av[]);
+
 /**
  * handle_non_interactive - Handles non-interactive mode based on command.
  *
@@ -47,8 +49,10 @@ void handle_non_interactive(char *command, shell_info *info, char *av[])
 			{
 				my_print_to_stderr(av[0]);
 				my_print_to_stderr(": ");
+				my_print_to_stderr("1: ");
 				my_print_to_stderr(args[0]);
 				my_print_to_stderr(": not found\n");
+				exit(127);
 			}
 			else
 			{
@@ -82,11 +86,11 @@ int is_builtin_command(char *command)
 	{
 		if (_strcmp(command, builtin_commands[i]) == 0)
 		{
-			return 1;  /* It is a built-in command */
+			return (1);  /* It is a built-in command */
 		}
 	}
 
-	return 0;  /* It is not a built-in command */
+	return (0);  /* It is not a built-in command */
 }
 
 
@@ -147,7 +151,6 @@ int is_alias(shell_info *info, char *command)
  * expand_and_execute_alias - Expands and executes the specified alias.
  * @info: Pointer to the shell_info structure.
  * @args: Array of strings containing the alias name and its arguments.
- * @av: Array of strings containing the program name and its arguments.
  */
 
 void expand_and_execute_alias(shell_info *info, char *args[])

@@ -1,5 +1,8 @@
 #include "shell.h"
 
+void execute_command_ins(char *command, char *av[]);
+char *read_user_input_from_stdin();
+
 /**
  * read_user_input_from_stdin - Reads a line of text from standard input.
  *
@@ -56,7 +59,8 @@ char *read_user_input_from_stdin()
 
 	free(line);
 
-	if (num_of_chars == -1 && !feof(stdin)) {
+	if (num_of_chars == -1 && !feof(stdin))
+	{
 		perror("getline");
 		free(cmd_buffer);
 		exit(EXIT_FAILURE);
@@ -71,12 +75,13 @@ char *read_user_input_from_stdin()
 /**
  * tokenization_ins - Tokenizes the command line input.
  * @info: Pointer to the shell_info structure.
+ * @num_commands: Pointer to an integer to store the number of commands found.
  */
 
 void tokenization_ins(shell_info *info, int *num_commands)
 {
 	char *token;
-	int i = 0, j = 0;
+	int i = 0;
 
 	token = strtok(info->command_line, ";\n");
 	while (token != NULL && i < MAX_ARG_COUNT - 1)
@@ -90,12 +95,6 @@ void tokenization_ins(shell_info *info, int *num_commands)
 	}
 	info->argv[i] = NULL;
 
-	while (info->argv[j] != NULL)
-	{
-		printf("info->argv[%d]: %s\n", j, info->argv[j]);
-		j++;
-	}
-
 	*num_commands = i;
 }
 
@@ -106,8 +105,8 @@ void tokenization_ins(shell_info *info, int *num_commands)
  * executes each command in a separate child process using fork() and execve().
  * It waits for each child process to complete in the parent process.
  *
- * @info: Pointer to the shell_info structure containing command arguments.
- * @num_commands: Number of commands to be executed.
+ * @command: The command to be executed.
+ * @av: Array of strings containing the program name and its arguments.
  */
 
 void execute_command_ins(char *command, char *av[])
@@ -142,6 +141,7 @@ void execute_command_ins(char *command, char *av[])
 				perror("execve");
 				exit(EXIT_FAILURE);
 			}
+
 		}
 		else
 		{
@@ -164,15 +164,17 @@ void execute_command_ins(char *command, char *av[])
 		my_print_to_stderr("1: ");
 		my_print_to_stderr(args[0]);
 		my_print_to_stderr(": not found\n");
+		exit(127);
 
 	}
+
 }
 
 
 /**
  * get_location_ins - Gets the environment path for command execution
  * in non-interactive mode.
- * @info: Pointer to the shell_info structure.
+ * @command: The command to be executed.
  * Return: Array of command paths on success, NULL on failure.
  */
 
@@ -190,9 +192,9 @@ char *get_location_ins(char *command)
 }
 
 /**
- * location - Locates a command in the given path.
+ * location_ins - Locates a command in the given path.
  * @path: Path to search for the command.
- * @arg: Command to search for.
+ * @command: The command to be searched.
  * Return: Full path to the located command, NULL if not found.
  */
 
@@ -210,7 +212,7 @@ char *location_ins(char *path, char *command)
 		{
 			perror("malloc");
 			free(path_copy);
-			return NULL;
+			return (NULL);
 		}
 
 		_strcpy(full_path, token);

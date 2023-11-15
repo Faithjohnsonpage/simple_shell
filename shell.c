@@ -1,13 +1,12 @@
 #include "shell.h"
 
-void process_input_interactive(shell_info *info, char *av[], char *builtin_commands[]);
+void process_input_interactive(shell_info *info, char *av[], char *builtin[]);
 void process_input_non_interactive(shell_info *info, char *av[]);
 
 /**
  * process_input_non_interactive - Process non-interactive shell input.
  * @info: Shell information structure.
  * @av: Array of command line arguments.
- * @builtin_commands: Array of built-in commands.
  */
 
 void process_input_non_interactive(shell_info *info, char *av[])
@@ -69,10 +68,10 @@ void process_input_non_interactive(shell_info *info, char *av[])
  * process_input_interactive - Process interactive shell input.
  * @info: Shell information structure.
  * @av: Array of command line arguments.
- * @builtin_commands: Array of built-in commands.
+ * @builtin: Array of built-in commands.
  */
 
-void process_input_interactive(shell_info *info, char *av[], char *builtin_commands[])
+void process_input_interactive(shell_info *info, char *av[], char *builtin[])
 {
 	char *buffer, *filepath;
 	int status = 0, i, flag = 0;
@@ -107,9 +106,9 @@ void process_input_interactive(shell_info *info, char *av[], char *builtin_comma
 		tokenization(info);
 
 		/* check if the command is a builtin command and continue */
-		for (i = 0; builtin_commands[i] != NULL; i++)
+		for (i = 0; builtin[i] != NULL; i++)
 		{
-			if (_strcmp(info->argv[0], builtin_commands[i]) == 0)
+			if (_strcmp(info->argv[0], builtin[i]) == 0)
 			{
 				flag = 1;
 				builtIn_Cmds(info);

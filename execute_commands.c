@@ -1,5 +1,7 @@
 #include "shell.h"
 
+void execute_command(shell_info *info, int *status);
+
 /**
  * execute_command - Executes a command.
  * @info: Pointer to the shell_info structure.
@@ -67,8 +69,8 @@ void execute_command(shell_info *info, int *status)
 
 /**
  * execute_cmd_from_paths - Executes commands from an array of paths.
- * @cmd_paths: Array of command paths.
- * @num_commands: Number of commands in cmd_paths.
+ * @info: Pointer to the shell_info structure.
+ * @args: Array of strings containing the command and its arguments.
  */
 
 void execute_cmd_from_paths(shell_info *info, char *args[])

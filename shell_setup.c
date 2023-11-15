@@ -28,6 +28,7 @@ void init_shell_info(shell_info *info)
 
 /**
  * read_user_input - Reads input from the user.
+ * @info: Pointer to the shell_info structure.
  * Return: Pointer to the input string.
  */
 
@@ -75,8 +76,8 @@ void sigintHandler(int signum)
 	my_print("\n");
 
 	/* Reset the prompt and allow the user to input a new command */
-    prompt();
-    fflush(stdout);
+	prompt();
+	fflush(stdout);
 }
 
 /**

@@ -94,7 +94,7 @@ char *_itoa(int num, char *str, int base)
 
 /**
  * _atoi - Converts a string to an integer.
- * @str: The string to convert.
+ * @s: The string to convert.
  * Return: The integer value of the input string.
  */
 

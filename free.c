@@ -2,7 +2,7 @@
 
 /**
  * free_cmd_paths - Frees the memory allocated for an array of command paths.
- * @cmd_paths: Pointer to the array of command paths to be freed.
+ * @cmd_path: Pointer to the array of command paths to be freed.
  *
  * This function iterates through cmd_paths and frees each string element,
  * and then frees the cmd_paths array itself to prevent memory leaks.

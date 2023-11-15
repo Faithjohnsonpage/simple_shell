@@ -1,5 +1,7 @@
 #include "shell.h"
 
+char *trimWhitespaces(char *buffer);
+
 /**
  * my_print - Custom implementation of printf to write to stdout.
  * @string: The string to be written to stdout.
@@ -35,26 +37,25 @@ void my_print_to_stderr(const char *string)
  * Return: A pointer to the modified string.
  */
 
-char* trimWhitespaces(char *buffer)
+char *trimWhitespaces(char *buffer)
 {
-	char *trimmed_buffer;
-	int len;
+	char *t; /* t = trimmed_buffer */
+	int l; /* l = length */
 
-	trimmed_buffer = buffer;
+	t = buffer;
 
 	/* Trim leading whitespaces */
-	while (*trimmed_buffer && (*trimmed_buffer == ' ' || *trimmed_buffer == '\t')) {
-		trimmed_buffer++;
-	}
+	while (*t && (*t == ' ' || *t == '\t'))
+		t++;
 
-	len = strlen(trimmed_buffer);
+	l = _strlen(t);
 
 	/* Trim trailing whitespaces */
-	while (len > 0 && (trimmed_buffer[len - 1] == ' ' || trimmed_buffer[len - 1] == '\t' || trimmed_buffer[len - 1] == '\n'))
+	while (l > 0 && (t[l - 1] == ' ' || t[l - 1] == '\t' || t[l - 1] == '\n'))
 	{
-		trimmed_buffer[len - 1] = '\0';
-		len--;
+		t[l - 1] = '\0';
+		l--;
 	}
 
-	return (trimmed_buffer);
+	return (t);
 }
